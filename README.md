@@ -1,1 +1,9 @@
-# nest-demo
+- nest new myproject 新创建一个 nest 项目
+- nest generate controller todo 新建一个 controller
+- nest generate module features/todo 新建一个 module
+- nest generate service features/todo 新建一个 service
+- throw new HttpException('有错误', HttpStatus.BAD_REQUEST) 必须抛出 new HttpException 不能 throw new Error 否则 exception filter 不识别
+  - 可以自定义返回的 error 类型 throw new HttpException({ code: HttpStatus.BAD_REQUEST, msg: '出錯!', },HttpStatus.BAD_REQUEST)
+  - nest 有提供基于 HttpException 的细分 error 比如 throw new BadRequestException('出錯囉!')
+  - 可以新建个 custom.exception.ts 文件 自己写个 class 继承 HttpException 相当于自定义 HttpException
+  - 可以自己定义 exception filter 处理 exception 新建一个 http-exception.filter.ts ArgumentsHost 里面有 ctx，主要为了抹平不同的底层尽可能提供通用的 req 和 rsp 第一种是在 controller 中加入 filter @UseFilters(HttpExceptionFilter) 第二种是全局引用 filter app.useGlobalFilters(new HttpExceptionFilter()); 还有一种更优雅 是在 module 的 providers 中依赖注入 { provide: APP_FILTER, useClass: HttpExceptionFilter }
